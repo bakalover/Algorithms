@@ -1,42 +1,37 @@
 #include <iostream>
 using namespace std;
-
 int n, v;
-int Get(int v, int* p);
-int Union(int v, int u, int* p);
-
-int main(){
+ 
+int get(int v, int* parent){
+    return parent[v]=(v==parent[v]?v:get(parent[v],parent));
+}
+ 
+int unionSet(int v, int u, int* parent)
+{
+    if(u==0) ++u;
+    v = get(v, parent);
+    u = get(u, parent);
+    parent[v] = u;
+    return v;
+}
+ 
+ 
+int main()
+{
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
     cin >> n;
-    int p[n+2] = {0};
+    int parent[n+1] = {0};
     int ans[n+1] = {0};
-    for (size_t i = 0; i < n+1; i++)
-    {
-        p[i] = i;
+    for (int i = 0; i < n+1; i++) {
+        parent[i] = i;
     }
-    
-    for (size_t i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         cin >> v;
-        ans[i] = Union(v,v+1,p);
-    }
-    for (size_t i = 0; i < n; i++)
-    {
-        cout<<ans[i]<<" ";
+        cout << unionSet(v,(v+1)%(n+1), parent) << " ";
     }
     
 }
-
-int Get(int v, int* p){
-    return p[v] = (v==p[v]?v:Get(p[v],p));
-}
-
-int Union(int v, int u, int* p){
-    v = Get(v,p);
-    u = Get(u,p);
-    cout<<v<<u<<endl;
-    p[v] = u;
-    return u;
-}
+ 
+ 
