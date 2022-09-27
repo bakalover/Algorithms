@@ -2,7 +2,7 @@
 using namespace std;
 int n, m, v;
 char req;
- 
+
  
 int get(int v, int* parent){
     return parent[v]=(v==parent[v]?v:get(parent[v],parent));
@@ -22,7 +22,7 @@ int main()
     cin.tie(0);
     cout.tie(0);
     cin >> n >> m;
-    int parent[n+2];
+    int parent[n+2] = {0};
     for (int i = 0; i < n+2; i++) {
         parent[i] = i;
     }
