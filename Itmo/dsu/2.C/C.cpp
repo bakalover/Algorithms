@@ -3,22 +3,32 @@
 using namespace std;
 int n, q, t, x, y;
  
-int get(int v, int* parent){
-    return parent[v]=(v==parent[v]?v:get(parent[v],parent));
+int get(int v, int* p){
+    return p[v]=(v==p[v]?v:get(p[v],p));
 }
  
-void unionSet(int v, int u, int* parent)
+void unionSet(int v, int u, int* p, int* rank)
 {
-    v = get(v, parent);
-    u = get(u, parent);
-    parent[v] = u;
+    v = get(v, p);
+    u = get(u, p);
+    if (rank[v]==rank[u]){
+        ++rank[v];
+    }
+    if(rank[v]>rank[u]){
+        p[u] = v;
+    }
+    else{
+        p[v] = u;
+    }
 }
  
-/*void binUnion(int v[], int u[], int* p){
-    if(v.size()==1){
-        
+void binUnion(int l, int r, int* p, int* rank){  
+    if(l!=r){
+        binUnion(l, (l+r)/2, p, rank);
+        binUnion((l+r)/2+1, r, p, rank);
+        unionSet(l, (l+r)/2 + 1, p, rank);
     }
-}*/
+}
 
 int main()
 {
@@ -26,23 +36,21 @@ int main()
     cin.tie(0);
     cout.tie(0);
     cin >> n >> q;
-    int parent[n+1] = {0};
+    int p[n+1] = {0};
+    int rank[n+1] = {0};
     for (int i = 0; i < n+1; i++) {
-        parent[i] = i;
+        p[i] = i;
     }
     for (int i = 0; i < q; i++) {
         cin >> t >> x >> y;
         if(t==1){
-            unionSet(x,y,parent);
+            unionSet(x,y,p,rank);
         }
-        if(t==2){ // union by binary search
-            for (size_t i = x; i < y; i=i+2)
-            {
-                unionSet(i,i+1,parent);
-            }
+        if(t==2){ // union by binary tree
+            binUnion(x,y,p,rank);
         }
         if(t==3){
-            if(get(x,parent)==get(y,parent)){
+            if(get(x,p)==get(y,p)){
                 cout<<"YES"<<endl;
             }
             else{
