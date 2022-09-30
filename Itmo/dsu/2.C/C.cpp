@@ -23,9 +23,11 @@ void unionSet(int v, int u, int* p, int* rank)
 }
  
 void binUnion(int l, int r, int* p, int* rank){  
-    if(l!=r){
+    if(r>l+1){
         binUnion(l, (l+r)/2, p, rank);
         binUnion((l+r)/2+1, r, p, rank);
+    }
+    if(r!=l){
         unionSet(l, (l+r)/2 + 1, p, rank);
     }
 }
