@@ -1,9 +1,14 @@
 #include <iostream>
 #include <vector>
 using namespace std;
- 
-int get(int v, int* parent,int* relation){
-    return relation[v] + (v==parent[v]?0:get(parent[v],parent,relation));
+int count = 0;
+
+int get(int v, int* parent,int* relation){ //Using stack to store local on each level
+    int local = count;
+    count += relation[v];
+    parent[v] = (v==parent[v]?v:get(parent[v],parent,relation));
+    relation[v] = count - local;
+    return parent[v];
 }
  
 void unionSet(int v, int u, int* parent,int* relation)
@@ -22,7 +27,7 @@ int main()
     vector<int> ans;
     cin >> n >> m;
     int parent[n+1] = {0};
-    int relation[n+1] = {0};
+    int relation[n+1]={0};
     for (int i = 0; i < n+1; i++) {
         parent[i] = i;
     }
@@ -35,7 +40,9 @@ int main()
         }
         else{
             cin>>a;
-            ans.push_back(get(a,parent,relation));
+            count = 0;
+            get(a,parent,relation);
+            ans.push_back(relation[a]);
         }
     }
     for(int x: ans){
