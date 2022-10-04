@@ -15,7 +15,6 @@ void unionSet(int v, int u, int* parent)
     parent[v] = u;
 }
  
- 
 int main()
 {
     ios_base::sync_with_stdio(0);
