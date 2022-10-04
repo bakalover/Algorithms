@@ -50,7 +50,7 @@ int main()
         cin >> e.u >> e.v >> e.w;
         edges.push_back(e);
     }
-    sort(edges.begin(),edges.end(),[](edge a, edge b){return a.w < b.w;});
+   sort(edges.begin(),edges.end(),[](edge a, edge b){return a.w < b.w;});
     for(edge e: edges){
         if(get(e.u,p)!=get(e.v,p)){
             unionSet(e.u,e.v,p,rank);
