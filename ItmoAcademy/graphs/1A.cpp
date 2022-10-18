@@ -1,6 +1,7 @@
 #include<iostream>
 #include<array>
 #include<cstring>
+#include<vector>
 using namespace std;
 
 int main(){
@@ -10,18 +11,21 @@ int main(){
     for (short int i = 0; i < t; i++)
     {
         cin>>n>>m;
-        short int arr[n+1][n+1];
-        memset(arr,0,sizeof arr);
+        //vector<pair<short int, char>> degs[n+1];
+        byte degs[n][m];
+        memset(degs,0,sizeof degs);
         check = true;
         for (short int k = 0; k < m; k++)
         {
             cin>>u>>v;
-            if (u==v||arr[u][v]!=0)
+            if (u==v||degs[u][v]==(byte)1)
             {
             check = false;
             }
-            ++arr[u][v];
-            ++arr[v][u];
+           // degs[u].push_back(make_pair(v,(char)1));
+            // degs[v].push_back(make_pair(u,(char)1));
+            degs[v][u]=(byte)1;
+            degs[v][u]=(byte)1;
         }
         if (check)
         {
@@ -30,7 +34,6 @@ int main(){
         else{
             cout<<"NO"<<endl;
         }
-        free(arr);
     }
     
 }
