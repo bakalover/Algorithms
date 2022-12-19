@@ -14,7 +14,7 @@ struct segtree{
         {
             size*=2;
         }
-        data.assign(2*size-1,0);
+        data.assign(2*size,0);
     }
 
     void construct(vector<int64_t> &arr){
@@ -24,7 +24,12 @@ struct segtree{
     
     void construct(vector<int64_t> &arr,int64_t x,int64_t l,int64_t r){
         if(r-l==1){
-            data[x] = arr[l];
+            if(l<arr.size()){
+                data[x] = arr[l];
+            }
+            else{
+                data[x] = 0;
+            }
         }
         else{
             int64_t m = (l+r)/2;
