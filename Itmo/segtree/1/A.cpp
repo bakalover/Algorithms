@@ -5,10 +5,10 @@ using namespace std;
 
 
 struct segtree{
-    vector <int64_t> data;
-    int64_t size;
+    vector <uint32_t> data;
+    uint32_t size;
 
-    void init(int64_t n){
+    void init(uint32_t n){
         size = 1;
         while (size<n)
         {
@@ -17,38 +17,25 @@ struct segtree{
         data.assign(2*size,0);
     }
 
-    void construct(vector<int64_t> &arr){
+    void construct(vector<uint32_t> &arr){
         init(arr.size());
-        construct(arr,0,0,size);
+        for (size_t i = 0; i < arr.size(); i++)
+        {
+            set(i,arr[i]);
+        }
+        
     }
     
-    void construct(vector<int64_t> &arr,int64_t x,int64_t l,int64_t r){
-        if(r-l==1){
-            if(l<arr.size()){
-                data[x] = arr[l];
-            }
-            else{
-                data[x] = 0;
-            }
-        }
-        else{
-            int64_t m = (l+r)/2;
-            construct(arr,2*x+1,l,m);
-            construct(arr,2*x+2,m,r);
-            data[x] = data[2*x+1] + data[2*x+2];
-        }
-    }
-
-    void set(int64_t i, int64_t v){
+    void set(uint32_t i, uint32_t v){
         set(i,v,0,0,size);
     }
 
-    void set(int64_t i, int64_t v, int64_t x, int64_t l, int64_t r){
+    void set(uint32_t i, uint32_t v, uint32_t x, uint32_t l, uint32_t r){
         if(r-l==1){
             data[x] = v;
             return;
         }
-        int64_t m = (l+r)/2;
+        uint32_t m = (l+r)/2;
         if(i<m){
             set(i,v,2*x+1,l,m);
         }
@@ -58,19 +45,18 @@ struct segtree{
         data[x] = data[2*x+1] + data[2*x+2];
     }
 
-    int64_t sum(int64_t l, int64_t r){
+    uint32_t sum(uint32_t l, uint32_t r){
         return sum(l,r,0,0,size);
     }
 
-    int64_t sum(int64_t l, int64_t r, int64_t x, int64_t lx, int64_t rx){
+    uint32_t sum(uint32_t l, uint32_t r, uint32_t x, uint32_t lx, uint32_t rx){
         if(l>=rx||r<=lx){
             return 0;
         }
         if(lx>=l&&rx<=r){
             return data[x];
         }
-        int64_t m = (lx+rx)/2;
-        return sum(l,r,2*x+1,lx,m)+sum(l,r,2*x+2,m,rx);
+        return sum(l,r,2*x+1,lx,(lx+rx)/2)+sum(l,r,2*x+2,(lx+rx)/2,rx);
     }
 };
 
@@ -80,11 +66,11 @@ int main(){
     cin.tie(0);
     cout.tie(0);
 
-    int64_t n,m,type,u,v;
+    uint32_t n,m,type,u,v;
 
     cin>>n>>m;
 
-    vector<int64_t> data(n);
+    vector<uint32_t> data(n);
 
     for (size_t i = 0; i < n; i++)
     {
@@ -101,7 +87,7 @@ int main(){
             tree.set(u,v);
         }
         else{
-            cout<<tree.sum(u,v)<<endl;
+            cout<<tree.sum(u,v)<<'\n';
         }
     }
     
