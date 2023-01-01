@@ -33,7 +33,7 @@ struct segtree{
 
     void set(int64_t i, int64_t v, int64_t x, int64_t l, int64_t r){
         if(r-l==1){
-            data[x] = v;
+            data[x] = v*pow(-1,l);
             return;
         }
         int64_t m = (l+r)/2;
@@ -54,8 +54,8 @@ struct segtree{
         if(l>=rx||r<=lx){
             return 0;
         }
-        if(lx>=l&&rx<=r&&rx-lx==1){
-            return data[x]*pow(-1,l-lx);
+        if(lx>=l&&rx<=r){
+            return data[x];
         }
         return sum(l,r,2*x+1,lx,(lx+rx)/2)+sum(l,r,2*x+2,(lx+rx)/2,rx);
     }
@@ -88,7 +88,7 @@ int main(){
             tree.set(u-1,v);
         }
         else{
-            cout<<tree.sum(u-1,v)<<'\n';
+            cout<<pow(-1,u-1)*tree.sum(u-1,v)<<'\n';
         }
     }
     
