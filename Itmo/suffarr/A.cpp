@@ -23,6 +23,47 @@ namespace generic {
     }
 }
 
+void radix_sort_gen(vector<pair<pair<int64_t,int64_t>,int64_t>> &arr, const size_t n, const bool part){
+    vector<int64_t> cnt(n),pos(n);
+    vector<pair<pair<int64_t,int64_t>,int64_t>> arr_ans(n);
+    if(part){
+        for (auto el : arr)
+        {   
+            ++cnt[el.first.second];
+        }
+    }
+    else{
+        for (auto el : arr)
+        {   
+            ++cnt[el.first.first];
+        }
+    }
+
+    pos[0]=0;
+    for (size_t i = 1; i < n; i++)
+    {
+        pos[i] = pos[i-1] + cnt[i-1];
+    }
+    
+    if(part){
+        for(auto el: arr){
+            arr_ans[pos[el.first.second]] = el;
+            ++pos[el.first.second];
+        }
+    }
+    else{
+        for(auto el: arr){
+            arr_ans[pos[el.first.first]] = el;
+            ++pos[el.first.first];
+        }
+    }
+}
+
+void radix_sort(vector<pair<pair<int64_t,int64_t>,int64_t>> &arr){
+    size_t n = arr.size();
+    radix_sort_gen(arr,n,true);
+    radix_sort_gen(arr,n,false);
+}
 
 int main() {
     ios_base::sync_with_stdio(0);
