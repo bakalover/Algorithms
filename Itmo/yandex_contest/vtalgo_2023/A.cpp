@@ -12,7 +12,6 @@ int main(){
 
     if(n==1){cin>>c_1;cout<<1<<" "<<1<<endl;return 0;}
     if(n==2){cin>>c_2>>c_1;cout<<1<<" "<<2<<endl;return 0;}
-
     for (size_t i = 0; i < n; i++)
     {
         c_3 = c_2;
