@@ -55,7 +55,7 @@ int main(){
 
             else{
 
-                if(it_l->second.top().first==level_counter){
+                if(!it_l->second.empty() && it_l->second.top().first==level_counter){
                     it_l->second.top().second = r_prs;
                 }
 
@@ -78,7 +78,13 @@ int main(){
                 }
 
                 else{
-                    stack.push(make_pair(level_counter,it_r->second.top().second));
+                    
+                    if(it_r->second.empty()){
+                        stack.push(make_pair(level_counter,0));
+                    }
+                    else{
+                        stack.push(make_pair(level_counter,it_r->second.top().second));
+                    }
                 }
 
                 memory.insert(pair(l,stack));
@@ -88,11 +94,42 @@ int main(){
             else{
 
                 if(it_r==memory.end()){
-                    it_l->second.top().second = 0;
+
+                    if(it_l->second.empty()){
+                         it_l->second.push(make_pair(level_counter,0));
+                    }
+
+                    else{
+                        it_l->second.top().second = 0;
+                    }
+
                 }
 
                 else{
-                    it_l->second.top().second = it_r->second.top().second;
+
+                    if(it_l->second.empty()){
+
+                        if(it_r->second.empty()){
+                            it_l->second.push(make_pair(level_counter,0));
+                        }
+
+                        else{
+                            it_l->second.push(make_pair(level_counter,it_r->second.top().second));
+                        }
+
+                    }
+
+                    else{
+
+                        if(it_r->second.empty()){
+                            it_l->second.top().second=0;
+                        }
+
+                        else{
+                            it_l->second.top().second=it_r->second.top().second;
+                        }
+                        
+                    }
                 }
 
             }
