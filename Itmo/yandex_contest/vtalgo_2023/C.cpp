@@ -40,6 +40,7 @@ int main(){
 
         l = s.substr(0, s.find(delim));
         r = s.substr(s.find(delim)+1, s.size()-1);
+            //it_r->second.top().second
 
         try{
             r_prs = stoi(r);
@@ -67,8 +68,10 @@ int main(){
         }
 
         catch(invalid_argument const& ex){
+
             it_l = memory.find(l);
             it_r = memory.find(r);
+
             if(it_l==memory.end()){
 
                 stack<pair<uint_fast16_t,int_fast32_t>> stack;
@@ -96,11 +99,16 @@ int main(){
                 if(it_r==memory.end()){
 
                     if(it_l->second.empty()){
-                         it_l->second.push(make_pair(level_counter,0));
+                        it_l->second.push(make_pair(level_counter,0));
                     }
 
                     else{
-                        it_l->second.top().second = 0;
+                        if(it_l->second.top().first==level_counter){
+                            it_l->second.top().second = 0;
+                        }
+                        else{
+                             it_l->second.push(make_pair(level_counter,0));
+                        }
                     }
 
                 }
@@ -122,11 +130,24 @@ int main(){
                     else{
 
                         if(it_r->second.empty()){
-                            it_l->second.top().second=0;
+
+                            if(it_l->second.top().first==level_counter){
+                                it_l->second.top().second=0;
+                            }
+
+                            else{
+                                it_l->second.push(make_pair(level_counter,0));
+                            }
+
                         }
 
                         else{
-                            it_l->second.top().second=it_r->second.top().second;
+                            if(it_l->second.top().first==level_counter){
+                                it_l->second.top().second=it_r->second.top().second;
+                            }
+                            else{
+                                it_l->second.push(make_pair(level_counter,it_r->second.top().second));
+                            }
                         }
                         
                     }
@@ -134,7 +155,6 @@ int main(){
 
             }
             cout <<  memory.find(l)->second.top().second << endl; 
-            //it_r->second.top().second
         }
     }
 
