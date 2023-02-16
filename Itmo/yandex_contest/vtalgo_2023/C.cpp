@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <stack>
 #include <vector>
+#include <set>
 using namespace std;
 
 int main(){
@@ -13,37 +14,43 @@ int main(){
 
     unordered_map<string,stack<pair<uint_fast16_t,int_fast32_t>>> memory; // (var name, (№ of level, value))
     unordered_map<string,stack<pair<uint_fast16_t,int_fast32_t>>>::iterator it_l, it_r;
-    stack<string> check;
+    stack<pair<uint_fast16_t, set<string>>> check;
     string s, l, r, delim = "="; 
     int_fast32_t r_prs{};
     uint_fast16_t level_counter{};
 
 
+    check.push(make_pair(0,set<string>()));
+
     while(cin>>s){
 
         if(s=="{"){
             ++level_counter;
+            check.push(make_pair(level_counter,set<string>()));
             continue;
 
         }
 
         if(s=="}"){
-
-            for(auto& el: memory){
+            /*for(auto& el: memory){ // Слабое место по скорости
                 if(!el.second.empty() && el.second.top().first==level_counter){
                     el.second.pop();
                 }
+            }*/
+            for(auto& el : check.top().second)
+            {
+                memory.find(el)->second.pop();
             }
+            check.pop();
             --level_counter;
             continue;
 
         }
 
         l = s.substr(0, s.find(delim));
-        l = l+"#$%^&*(";
         r = s.substr(s.find(delim)+1, s.size()-1);
-        r = r+"#$%^&*(";
-            //it_r->second.top().second
+
+        check.top().second.insert(l);
 
         try{
             r_prs = stoi(r);
@@ -53,7 +60,7 @@ int main(){
 
                 stack<pair<uint_fast16_t,int_fast32_t>> stack;
                 stack.push(make_pair(level_counter,r_prs));
-                memory.insert(pair(l,stack));
+                memory.insert(make_pair(l,stack));
 
             }
 
