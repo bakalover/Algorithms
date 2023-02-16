@@ -133,7 +133,8 @@ int main(){
                 }
 
             }
-            cout <<  it_r->second.top().second << endl; 
+            cout <<  memory.find(l)->second.top().second << endl; 
+            //it_r->second.top().second
         }
     }
 
