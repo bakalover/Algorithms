@@ -10,7 +10,7 @@ struct info{
     int32_t sum;
 };
 
-void construct(vector<int64_t> &arr, vector<info>& data,int64_t x,int64_t l,int64_t r){
+void construct(vector<int16_t> &arr, vector<info>& data,int64_t x,int64_t l,int64_t r){
         if(r-l==1){
             if(l<arr.size()){
                 data[x].seg = arr[l];
@@ -40,7 +40,7 @@ int main(){
 
     cin>>n;
     
-    vector<int64_t> arr (n);
+    vector<int16_t> arr (n);
 
     for (size_t i = 0; i < n; i++)
     {
