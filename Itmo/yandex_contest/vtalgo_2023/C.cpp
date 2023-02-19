@@ -32,11 +32,6 @@ int main(){
         }
 
         if(s=="}"){
-            /*for(auto& el: memory){ // Слабое место по скорости
-                if(!el.second.empty() && el.second.top().first==level_counter){
-                    el.second.pop();
-                }
-            }*/
             for(auto& el : check.top().second)
             {
                 memory.find(el)->second.pop();
