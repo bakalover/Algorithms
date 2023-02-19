@@ -4,26 +4,31 @@ using namespace std;
 
 
 struct info{
-    int64_t seg;
-    int64_t pref;
-    int64_t suf;
-    int64_t sum;
+    int32_t seg;
+    int32_t pref;
+    int32_t suf;
+    int32_t sum;
 };
 
-struct info find(vector<int64_t>& arr, int64_t l, int64_t r){
-    if(r-l==1){
-        return (struct info){.seg=arr[l],.pref=arr[l],.suf=arr[l],.sum=arr[l]};
+void construct(vector<int64_t> &arr, vector<info>& data,int64_t x,int64_t l,int64_t r){
+        if(r-l==1){
+            if(l<arr.size()){
+                data[x].seg = arr[l];
+                data[x].sum = arr[l];
+                data[x].pref = arr[l];
+                data[x].suf = arr[l];
+            }
+        }
+        else{
+            int64_t m = (l+r)/2;
+            construct(arr,data,2*x+1,l,m);
+            construct(arr,data,2*x+2,m,r);
+            data[x].seg = max(max(data[2*x+1].seg,data[2*x+2].seg),data[2*x+1].suf+data[2*x+2].pref);
+            data[x].pref = max(data[2*x+1].pref, data[2*x+1].sum+data[2*x+2].pref);
+            data[x].suf = max(data[2*x+2].suf,data[2*x+2].sum+data[2*x+1].suf);
+            data[x].sum = data[2*x+1].sum + data[2*x+2].sum;
+        }
     }
-    int64_t m = (l+r)/2;
-    struct info info_l = find(arr,l,m);
-    struct info info_r = find(arr,m,r);
-    return (struct info){
-        .seg = max(max(info_l.seg, info_r.seg), info_l.suf + info_r.pref),
-        .pref = max(info_l.pref, info_l.sum + info_r.pref),
-        .suf = max(info_r.suf, info_r.sum + info_l.suf),
-        .sum = info_l.sum + info_r.sum
-    };
-}
 
 int main(){
 
@@ -41,8 +46,17 @@ int main(){
     {
         cin>>arr[i];
     }
+
+    vector <info> data;
+    int64_t size = 1;
+    while (size<n)
+    {
+        size*=2;
+    }
+    data.assign(2*size, (struct info){.seg=0,.pref=0,.suf=0,.sum=0});
+    construct(arr, data, 0, 0, size);
     
-    cout << max((int64_t)0, find(arr, 0, arr.size()-1).seg) << endl;
+    cout << max((int32_t)0, data[0].seg) << endl;
 
     return 0;
 
