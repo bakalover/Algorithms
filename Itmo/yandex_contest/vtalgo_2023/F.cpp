@@ -8,26 +8,21 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    vector<vector<string>> arr(10, vector<string>(0));
+
+    vector<string> arr;
     string s;
 
     while (cin >> s)
     {
-        arr[s[0] - '0'].push_back(s);
-    }
-    cout << "---------------" << endl;
-    for (auto &el : arr)
-    {
-        sort(el.begin(), el.end());
-        // sort(el.begin(), el.end(),[](string s1, string s2){return s1.length()>s2.length();});
+        arr.push_back(s);
     }
 
-    for (int64_t i = arr.size() - 1; i >= 0; --i)
+    sort(arr.begin(), arr.end(), [](string s1, string s2)
+         { return s1 + s2 > s2 + s1; });
+
+    for (size_t i = 0; i < arr.size(); i++)
     {
-        for (int64_t j = arr[i].size() - 1; j >= 0; --j)
-        {
-            cout << arr[i][j] << endl;
-        }
+        cout << arr[i];
     }
 
     return 0;

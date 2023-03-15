@@ -24,7 +24,7 @@ int main()
 
     while (cin >> s)
     {
-
+        
         if (s == "{")
         {
             ++level_counter;
