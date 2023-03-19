@@ -43,20 +43,14 @@ int main()
         auto p = coord[j];
         if (p.x != x_min || p.y != y_min)
         {
-            arr.push_back(make_pair(p.i, (p.x - x_min) / (sqrt((p.x - x_min) * (p.x - x_min) + (p.y - y_min) * (p.y - y_min)))));
+            arr.push_back(make_pair(p.i, (10e15 * (p.x - x_min)) / (sqrt((p.x - x_min) * (p.x - x_min) + (p.y - y_min) * (p.y - y_min)))));
         }
     }
     // cout << "SIZE:: " << arr.size() << endl;
     sort(arr.begin(), arr.end(), [](auto p1, auto p2)
-         { if(abs(p1.second-p2.second) <= 1e-9){
-            return (p1.x - x_min) * (p1.x - x_min) + (p1.y - y_min) * (p1.y - y_min) < (p2.x - x_min) * (p2.x - x_min) + (p2.y - y_min) * (p2.y - y_min)
-        }
-        else
-        {
-            return p1.second < p2.second;
-        } });
+         { return p1.second > p2.second; });
 
-    cout << i_min << " " << arr[(arr.size()) / 2].first << endl;
+    cout << i_min << " " << arr[(arr.size() - 1) / 2].first << endl;
 
     return 0;
 }
