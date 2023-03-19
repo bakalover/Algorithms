@@ -19,7 +19,7 @@ int main()
 
     size_t n;
     double x, y;
-    double x_min = 10000000000, y_min = 1000000000000;
+    double x_min = 10000050.0, y_min = 10000050.0;
     size_t i_min;
     vector<pair<uint16_t, double>> arr;
     vector<struct dot> coord;
@@ -30,26 +30,33 @@ int main()
     {
         cin >> x >> y;
         coord.push_back((struct dot){.i = i, .x = x, .y = y});
-        if (x < x_min && y < y_min)
+        if (y <= y_min)
         {
             i_min = i;
             x_min = x;
             y_min = y;
         }
     }
-    for (size_t i = 0; i < n; i++)
+    // cout << x_min << " " << y_min << endl;
+    for (size_t j = 0; j < n; j++)
     {
-        auto p = coord[i];
+        auto p = coord[j];
         if (p.x != x_min || p.y != y_min)
         {
-            arr.push_back(make_pair(p.i, (p.y - y_min + 0.5) / (p.x - x_min + 0.5)));
+            arr.push_back(make_pair(p.i, (p.x - x_min) / (sqrt((p.x - x_min) * (p.x - x_min) + (p.y - y_min) * (p.y - y_min)))));
         }
     }
+    // cout << "SIZE:: " << arr.size() << endl;
+    sort(arr.begin(), arr.end(), [](auto p1, auto p2)
+         { if(abs(p1.second-p2.second) <= 1e-9){
+            return (p1.x - x_min) * (p1.x - x_min) + (p1.y - y_min) * (p1.y - y_min) < (p2.x - x_min) * (p2.x - x_min) + (p2.y - y_min) * (p2.y - y_min)
+        }
+        else
+        {
+            return p1.second < p2.second;
+        } });
 
-    sort(arr.begin(), arr.end(), [](auto &p1, auto &p2)
-         { return p1.second > p2.second; });
-
-    cout << i_min << " " << arr[(arr.size() - 1) / 2].first << endl;
+    cout << i_min << " " << arr[(arr.size()) / 2].first << endl;
 
     return 0;
 }
