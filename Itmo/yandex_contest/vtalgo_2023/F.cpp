@@ -11,7 +11,7 @@ int main()
 
     vector<string> arr;
     string s;
-
+    
     while (cin >> s)
     {
         arr.push_back(s);

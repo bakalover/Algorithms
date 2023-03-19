@@ -11,25 +11,29 @@ struct dot
     double y;
 };
 
+struct angdot
+{
+    size_t i;
+    double ang;
+};
+
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
-    size_t n;
-    double x, y;
-    double x_min = 10000050.0, y_min = 10000050.0;
-    size_t i_min;
-    vector<pair<uint16_t, double>> arr;
+    size_t n, i_min;
+    double x, y, ang, x_min = 10e6 + 1, y_min = 10e6 + 1;
     vector<struct dot> coord;
+    vector<struct angdot> coord_rel_min;
 
     cin >> n;
-
     for (size_t i = 1; i <= n; i++)
     {
         cin >> x >> y;
         coord.push_back((struct dot){.i = i, .x = x, .y = y});
+
         if (y <= y_min)
         {
             i_min = i;
@@ -37,20 +41,22 @@ int main()
             y_min = y;
         }
     }
-    // cout << x_min << " " << y_min << endl;
-    for (size_t j = 0; j < n; j++)
+
+    for (size_t i = 0; i < n; i++)
     {
-        auto p = coord[j];
-        if (p.x != x_min || p.y != y_min)
+        if (coord[i].x != x_min || coord[i].y != y_min)
         {
-            arr.push_back(make_pair(p.i, (10e15 * (p.x - x_min)) / (sqrt((p.x - x_min) * (p.x - x_min) + (p.y - y_min) * (p.y - y_min)))));
+
+            ang = atan2(coord[i].y - y_min, coord[i].x - x_min);
+            //ang *= 10e9;
+            coord_rel_min.push_back((struct angdot){.i = coord[i].i, .ang = ang});
         }
     }
+    // cout << x_min << " " << y_min << endl;
     // cout << "SIZE:: " << arr.size() << endl;
-    sort(arr.begin(), arr.end(), [](auto p1, auto p2)
-         { return p1.second > p2.second; });
+    sort(coord_rel_min.begin(), coord_rel_min.end(), [](auto &p1, auto &p2){ return p1.ang < p2.ang; });
 
-    cout << i_min << " " << arr[(arr.size() - 1) / 2].first << endl;
+    cout << i_min << " " << coord_rel_min[(coord_rel_min.size() - 1) / 2].i << endl;
 
     return 0;
 }
