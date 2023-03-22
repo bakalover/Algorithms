@@ -6,29 +6,26 @@ using namespace std;
 size_t part(vector<uint16_t> &arr, size_t l, size_t r)
 {
     uint16_t p = arr[l];
-    size_t i = l, j = r + 1;
-    for (;;)
+    size_t i = l, j = r;
+    while (i <= r)
     {
 
-        while (arr[++i] < p)
+        while (arr[i] < p)
         {
-            if (i == r)
-            {
-                break;
-            }
+            i++;
         }
 
-        while (arr[--j] > p)
+        while (arr[j] > p)
         {
+            j--;
         }
 
         if (i >= j)
         {
             break;
         }
-        swap(arr[i], arr[j]);
+        swap(arr[i++], arr[j--]);
     }
-    swap(arr[l], arr[j]);
     return j;
 }
 
@@ -39,7 +36,7 @@ void qsortt(vector<uint16_t> &arr, size_t l, size_t r)
         return;
     }
     size_t p = part(arr, l, r);
-    qsortt(arr, l, p - 1);
+    qsortt(arr, l, p);
     qsortt(arr, p + 1, r);
 }
 
