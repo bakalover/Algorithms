@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-// #include <algorithm>
 using namespace std;
 
 void merge(vector<string> &arr, vector<string> &help, size_t l, size_t m, size_t r, bool (*func)(string &p1, string &p2))
@@ -70,15 +69,3 @@ int main()
 
     return 0;
 }
-// 004
-// 05
-// 06
-// 066
-// 2
-// 22
-// 20
-// 23
-// 60
-// 6
-// 68
-// 67

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-// #include <algorithm>
 using namespace std;
 
 size_t part(vector<uint16_t> &arr, size_t l, size_t r)

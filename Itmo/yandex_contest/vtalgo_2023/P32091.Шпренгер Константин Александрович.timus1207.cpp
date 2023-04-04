@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-//#include <algorithm>
 #include <cmath>
 using namespace std;
 
@@ -93,34 +92,12 @@ int main()
         {
 
             ang = atan2(coord[i].y - y_min, coord[i].x - x_min);
-            //ang *= 10e9;
             coord_rel_min.push_back((struct angdot){.i = coord[i].i, .ang = ang});
         }
     }
-    // cout << x_min << " " << y_min << endl;
-    // cout << "SIZE:: " << arr.size() << endl;
     sort(coord_rel_min, [](auto &p1, auto &p2){ return p1.ang < p2.ang; });
 
     cout << i_min << " " << coord_rel_min[(coord_rel_min.size() - 1) / 2].i << endl;
 
     return 0;
 }
-// 8
-// -2 -3
-// -2 -1
-// 0 -2
-// 1 -1
-// 2 1
-// 1 2
-// -1 1
-// 3 3
-
-// 8
-// -2 -3
-// -2 -1
-// 0 -26
-// 1 -1
-// 3 1
-// 1 2
-// -1 1
-// 3 3
