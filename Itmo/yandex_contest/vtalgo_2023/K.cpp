@@ -120,41 +120,52 @@ class Allocator
 {
 private:
     list<Header> blocks;
-    vector<Header *> requests;
+    vector<pair<Header *, bool>> requests;
     BinHeap free;
 
 public:
-    Allocator(int64_t n)
+    Allocator(size_t n)
     {
-        blocks.push_back((struct Header){.prev = nullptr, .next = nullptr, .start_pos = 1, .cap = n, .free = true});
+        blocks.push_back((struct Header){.prev = nullptr, .next = nullptr, .start_pos = 1, .cap = n, .heap_index = 0, .free = true});
         free.push(&blocks.front());
     }
 
-    int64_t allocate(int64_t k)
+    int64_t allocate(size_t k)
     {
         Header *top_el = free.extract_max();
         if (k > top_el->cap)
         {
+            requests.push_back(make_pair(top_el, true));
+            free.push(top_el);
             return -1;
         }
         else
         {
-            Header new_block = (struct Header){.prev = top_el->prev, .next = top_el, .start_pos = top_el->start_pos, .cap = k, .free = false};
-
-            blocks.push_back(new_block);
-
-            if (top_el->prev != nullptr)
+            Header new_block;
+            if (k == top_el->cap)
             {
+                new_block = (struct Header){.prev = top_el->prev, .next = nullptr, .start_pos = top_el->start_pos, .cap = k, .heap_index = 0, .free = false};
+                blocks.push_back(new_block);
                 top_el->prev->next = &blocks.back();
+                requests.push_back(make_pair(&blocks.back(), false)); //
             }
+            else
+            {
+                new_block = (struct Header){.prev = top_el->prev, .next = top_el, .start_pos = top_el->start_pos, .cap = k, .heap_index = 0, .free = false};
+                blocks.push_back(new_block);
+                if (top_el->prev != nullptr)
+                {
+                    top_el->prev->next = &blocks.back();
+                }
 
-            top_el->cap -= k;
-            top_el->prev = &blocks.back();
-            top_el->start_pos += k;
+                top_el->cap -= k;
+                top_el->prev = &blocks.back();
+                top_el->start_pos += k;
 
-            free.push(top_el);
+                free.push(top_el);
 
-            requests.push_back(&blocks.back());
+                requests.push_back(make_pair(&blocks.back(), false));
+            }
 
             return new_block.start_pos;
         }
@@ -162,28 +173,49 @@ public:
 
     void deallocate(int64_t i)
     {
-        Header *cur = requests[i - 1];
-        requests.push_back(cur);
+        pair<Header *, bool> cur_pair = requests[i - 1];
+        Header *cur = cur_pair.first;
+        requests.push_back(cur_pair);
+        if (cur_pair.second)
+        {
+            return;
+        }
         cur->free = true;
         if (cur->prev == nullptr && cur->next == nullptr)
         {
             free.push(cur);
             return;
         }
-        if (cur->prev == nullptr && cur->next != nullptr && cur->next->free)
+        if (cur->prev == nullptr && cur->next != nullptr)
         {
-            cur->next->cap += cur->cap;
-            cur->next->prev = cur->prev;
-            cur->next->start_pos = cur->start_pos;
-            free.update(cur->next);
-            return;
+            if (cur->next->free)
+            {
+                cur->next->cap += cur->cap;
+                cur->next->prev = cur->prev;
+                cur->next->start_pos = cur->start_pos;
+                free.update(cur->next);
+                return;
+            }
+            else
+            {
+                free.push(cur);
+                return;
+            }
         }
-        if (cur->prev != nullptr && cur->next == nullptr && cur->prev->free)
+        if (cur->prev != nullptr && cur->next == nullptr)
         {
-            cur->prev->cap += cur->cap;
-            cur->prev->next = cur->next;
-            free.update(cur->prev);
-            return;
+            if (cur->prev->free)
+            {
+                cur->prev->cap += cur->cap;
+                cur->prev->next = cur->next;
+                free.update(cur->prev);
+                return;
+            }
+            else
+            {
+                free.push(cur);
+                return;
+            }
         }
         if (cur->prev != nullptr && cur->next != nullptr)
         {
