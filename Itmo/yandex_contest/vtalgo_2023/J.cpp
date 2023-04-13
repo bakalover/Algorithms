@@ -9,7 +9,7 @@ class GoblinQueue
 {
 private:
     deque<T> l, r;
-
+    int a, b, c;
     void rebalance()
     {
         if (r.size() < l.size())
