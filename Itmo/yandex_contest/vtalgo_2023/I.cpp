@@ -22,26 +22,6 @@ private:
     vector<deque<int32_t>> positions;
     priority_queue<pair<int32_t, int32_t>, vector<pair<int32_t, int32_t>>, Comp> which_pick;
 
-    // void create_queue_of_cars()
-    // {
-    //     int32_t car, car_pos;
-    //     vector<deque<int32_t>> pos_for_queue(positions);
-    //     for (size_t i = 0; i < p; i++)
-    //     {
-    //         car = game_prefer[i];
-    //         if (pos_for_queue[car].empty())
-    //         {
-    //             which_pick.push(make_pair(car, INT32_MAX));
-    //         }
-    //         else
-    //         {
-    //             car_pos = pos_for_queue[car].front();
-    //             which_pick.push(make_pair(car, car_pos));
-    //             pos_for_queue[car].pop_front();
-    //         }
-    //     }
-    // }
-
 public:
     Game(int32_t n, int32_t k, int32_t p) : positions(n + 1, deque<int32_t>()), window(), which_pick(), game_prefer()
     {
@@ -50,6 +30,7 @@ public:
         this->p = p;
         energy = 0;
     }
+    ~Game() {}
 
     void set_future_position(int32_t car, int32_t pos)
     {
@@ -58,31 +39,34 @@ public:
     }
     size_t max_chill()
     {
-        // create_queue_of_cars();
         int32_t car, car_pos;
-        for (size_t i = 0; i < p; i++)
+        for (size_t i = 0; i < game_prefer.size(); i++)
         {
             car = game_prefer[i];
+            positions[car].pop_front();
             if (window.find(car) == window.end())
             {
                 if (window.size() == k)
                 {
-                    positions[car].pop_front();
                     window.erase(which_pick.top().first);
                     which_pick.pop();
+                    window.insert(car);
+                    ++this->energy;
                 }
-                window.insert(car);
-                ++this->energy;
+                else
+                {
+                    window.insert(car);
+                    ++this->energy;
+                }
             }
-            if (positions[car].empty())
-            {
-                which_pick.push(make_pair(car, INT32_MAX));
-            }
-            else
+            if (!positions[car].empty())
             {
                 car_pos = positions[car].front();
                 which_pick.push(make_pair(car, car_pos));
-                // positions[car].pop_front();
+            }
+            else
+            {
+                which_pick.push(make_pair(car, 10000000));
             }
         }
         return this->energy;
