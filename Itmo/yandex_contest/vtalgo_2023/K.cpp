@@ -46,6 +46,11 @@ public:
             return nullptr;
         }
         --n;
+
+        size_t heap_index_temp = elements[n]->heap_index;
+        elements[n]->heap_index = elements[0]->heap_index;
+        elements[0]->heap_index = heap_index_temp;
+
         swap(elements[0], elements[n]);
         Header *el = elements.back();
         elements.pop_back();
