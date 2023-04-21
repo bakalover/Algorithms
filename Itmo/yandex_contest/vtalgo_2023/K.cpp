@@ -278,12 +278,12 @@ public:
 
             if (cur->next->free && cur->prev->free)
             {
-                free_queue.del(cur->prev);
                 fill_block(cur->next, cur->prev->prev, cur->next->next, cur->prev->start_pos, cur->cap + cur->prev->cap + cur->next->cap, cur->next->heap_index, true);
                 if (cur->prev->prev != nullptr)
                 {
                     cur->prev->prev->next = cur->next;
                 }
+                free_queue.del(cur->prev);
                 free_queue.update(cur->next);
                 // free(cur);
                 // free(cur->prev);
