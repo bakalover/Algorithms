@@ -7,7 +7,8 @@ int main()
     cin.tie(0);
     cout.tie(0);
 
-    uint32_t n, l = 1, r = 0, c_1{}, c_2{}, c_3{};       // Number and variables to store current 3 el
+    uint32_t n,
+        l = 1, r = 0, c_1{}, c_2{}, c_3{};               // Number and variables to store current 3 el
     uint32_t cur_count{}, max_count{}, l_ans{}, r_ans{}; // Current counter, maximum counter and answer borders
     cin >> n;
 
