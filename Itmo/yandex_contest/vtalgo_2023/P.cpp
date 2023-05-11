@@ -57,7 +57,7 @@ void search(int64_t u, vector<bool> &V, Gr &H)
     V[u] = true;
     for (int64_t i = 0; i < H[u].size(); i++)
     {
-        if (!V[i] && H[u][i] > 0)
+        if (!V[i] && H[u][i] >= 0)
         {
             search(i, V, H);
         }
@@ -69,7 +69,7 @@ void search_op(int64_t u, vector<bool> &V, Gr &H)
     V[u] = true;
     for (int64_t i = 0; i < H[u].size(); i++)
     {
-        if (!V[i] && H[i][u] > 0)
+        if (!V[i] && H[i][u] >= 0)
         {
             search_op(i, V, H);
         }
