@@ -2,3 +2,5 @@
 .vscode/
 temp*
 *.out
+.cache
+build
