@@ -1,1 +1,1 @@
-add_executable(pro ../yttest/D.cpp)
+add_executable(yt A.cpp)
