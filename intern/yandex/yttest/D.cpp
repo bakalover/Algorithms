@@ -116,9 +116,9 @@ struct Tree {
 };
 
 int main() {
-  // ios_base::sync_with_stdio(0);
-  // cin.tie(0);
-  // cout.tie(0);
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
   std::vector<OrderInfo> orders;
   int64_t N, Q, Start, End, Cost, Type;
   Tree tree{};

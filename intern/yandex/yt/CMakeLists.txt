@@ -1,2 +1,1 @@
-project(my_executable)
-add_executable(prog D.cpp)
+add_executable(pro ../yttest/D.cpp)
