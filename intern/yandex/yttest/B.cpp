@@ -33,7 +33,7 @@ size_t CalcTime(std::vector<RocketData> &data) {
       curr = data[i].timestamp;
     } else {
       res += (data[i].timestamp - curr);
-      curr == 0;
+      curr = 0;
     }
   }
   return res;

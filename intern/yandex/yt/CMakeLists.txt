@@ -1,1 +1,1 @@
-add_executable(yt A.cpp)
+add_executable(yt B.cpp)

@@ -1,1 +1,2 @@
 add_subdirectory(yandex)
+add_subdirectory(tinkoff)
