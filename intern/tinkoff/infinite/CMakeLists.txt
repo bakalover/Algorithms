@@ -1,1 +1,1 @@
-add_executable(tink A.cpp)
+add_executable(tink F.cpp)
