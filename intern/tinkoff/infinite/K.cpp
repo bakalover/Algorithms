@@ -5,7 +5,7 @@
 #include <iostream>
 
 // Fast pow + finite field
-int FastCircularPow(int64_t n, int64_t pow, int64_t p) {
+int64_t FastCircularPow(int64_t n, int64_t pow, int64_t p) {
   int64_t res = 1;
   while (pow > 0) {
     if (pow % 2 == 1) {
@@ -14,7 +14,7 @@ int FastCircularPow(int64_t n, int64_t pow, int64_t p) {
     n = (n * n) % p;
     pow /= 2;
   }
-  return res % p;
+  return res;
 }
 
 int main() {
