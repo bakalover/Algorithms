@@ -14,7 +14,7 @@ int FastCircularPow(int64_t n, int64_t pow, int64_t p) {
     n = (n * n) % p;
     pow /= 2;
   }
-  return res;
+  return res % p;
 }
 
 int main() {
