@@ -1,1 +1,1 @@
-add_subdirectory(prefix)
+add_executable(cf liceum.button.bfs.cpp)

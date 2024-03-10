@@ -1,1 +1,0 @@
-add_executable(cf round93.B.cpp)
