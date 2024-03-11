@@ -1,1 +1,1 @@
-add_executable(cf liceum.button.bfs.cpp)
+add_executable(cf r933.F.cpp)

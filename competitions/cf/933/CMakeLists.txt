@@ -1,0 +1,1 @@
+add_executable(cf933 A.cpp)
